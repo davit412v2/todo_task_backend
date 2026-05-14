@@ -1,5 +1,6 @@
 package com.todo.task.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.todo.task.entity.User;
@@ -8,9 +9,11 @@ import com.todo.task.repository.UserRepository;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean existsByEmail(String email) {
@@ -21,6 +24,7 @@ public class UserService {
     public User create(User user) {
         final String emailLowerCase = toLowerCase(user.getEmail());
         user.setEmail(emailLowerCase);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
