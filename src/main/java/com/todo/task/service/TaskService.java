@@ -10,7 +10,7 @@ import com.todo.task.repository.TaskRepository;
 public class TaskService {
     private final TaskRepository taskRepository;
 
-    TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 

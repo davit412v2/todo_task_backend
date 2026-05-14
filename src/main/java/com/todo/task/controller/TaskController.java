@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -50,12 +51,11 @@ public class TaskController {
     }
 
     @PostMapping("")
-    public ResponseEntity<TaskResponseDTO> createTask(TaskRequestDTO taskRequestDTO) {
+    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskRequestDTO taskRequestDTO) {
         try {
             User user = userService.findById(taskRequestDTO.getUserId());
 
             Task task = TaskMapping.toEntity(taskRequestDTO, user);
-            task.setUser(user);
             Task createdTask = taskService.create(task);
             return ResponseEntity.status(HttpStatus.CREATED).body(TaskMapping.toResponseDTO(createdTask));
         } catch (RuntimeException e) {
@@ -64,7 +64,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable("id") Long id, TaskRequestDTO taskRequestDTO) {
+    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable("id") Long id, @RequestBody TaskRequestDTO taskRequestDTO) {
         try {
             User user = userService.findById(taskRequestDTO.getUserId());
             Task task = TaskMapping.toEntity(taskRequestDTO, user);
