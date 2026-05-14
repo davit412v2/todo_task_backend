@@ -26,11 +26,9 @@ public class UserController {
 
     @GetMapping("/{email}")
     public ResponseEntity<String> getUserByEmail(@PathVariable("email") String email) {
-        try {
-            return ResponseEntity.ok(userService.findByEmail(email).getName());
-        } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+
+        return ResponseEntity.ok(userService.findByEmail(email).getName());
+
     }
 
     @PostMapping("")

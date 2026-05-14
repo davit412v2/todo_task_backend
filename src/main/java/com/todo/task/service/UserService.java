@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.todo.task.entity.User;
+import com.todo.task.exception.NotFoundException;
 import com.todo.task.repository.UserRepository;
 
 @Service
@@ -33,12 +34,12 @@ public class UserService {
     public User findByEmail(String email) {
         final String emailLowerCase = toLowerCase(email);
         return userRepository.findByEmail(emailLowerCase)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+                .orElseThrow(() -> new NotFoundException("User not found with email: " + emailLowerCase));
     }
 
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
     }
 
     public User findOrCreateGoogleUser(String email, String name) {
