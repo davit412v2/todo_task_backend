@@ -78,14 +78,12 @@ public class TaskController {
 
     @PatchMapping("/{id}/complete")
     public ResponseEntity<TaskResponseDTO> markTaskAsCompleted(@PathVariable("id") Long id) {
-        try {
+      
             Task task = taskService.findById(id);
             task.setCompleted(true);
             Task updatedTask = taskService.update(task);
             return ResponseEntity.ok(TaskMapping.toResponseDTO(updatedTask));
-        } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+       
     }
 
     @DeleteMapping("/{id}")
