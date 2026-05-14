@@ -1,5 +1,6 @@
 package com.todo.task.mapper;
 
+import com.todo.task.dto.user.UserRequestDTO;
 import com.todo.task.dto.user.UserResponseDTO;
 import com.todo.task.entity.User;
 
@@ -19,14 +20,14 @@ public class UserMapping {
         );
     }
 
-    public static User toEntity(UserResponseDTO userResponseDTO) {
-        if (userResponseDTO == null) {
+    public static User toEntity(UserRequestDTO userRequestDTO) {
+        if (userRequestDTO == null) {
             return null;
         }
         User user = new User();
-        user.setId(userResponseDTO.getId());
-        user.setName(userResponseDTO.getName());
-        user.setEmail(userResponseDTO.getEmail());
+        user.setName(userRequestDTO.getName());
+        user.setEmail(userRequestDTO.getEmail());
+        user.setPassword(userRequestDTO.getPassword());
         return user;
     }
 }

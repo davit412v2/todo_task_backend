@@ -30,6 +30,11 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
     private String toLowerCase(String email) {
         return email.toLowerCase();
     }

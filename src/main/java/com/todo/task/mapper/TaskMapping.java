@@ -1,5 +1,6 @@
 package com.todo.task.mapper;
 
+import com.todo.task.dto.task.TaskRequestDTO;
 import com.todo.task.dto.task.TaskResponseDTO;
 import com.todo.task.entity.Task;
 import com.todo.task.entity.User;
@@ -23,18 +24,16 @@ public class TaskMapping {
         );
     }
 
-    public static Task toEntity(TaskResponseDTO taskResponseDTO) {
-        if (taskResponseDTO == null) {
+    public static Task toEntity(TaskRequestDTO taskRequestDTO, User user) {
+        if (taskRequestDTO == null) {
             return null;
         }
         Task task = new Task();
-        task.setId(taskResponseDTO.getId());
-        task.setTitle(taskResponseDTO.getTitle());
-        task.setDescription(taskResponseDTO.getDescription());
-        task.setCompleted(taskResponseDTO.isCompleted());
-        if (taskResponseDTO.getUserId() != null) {
-            task.setUser(new User());
-            task.getUser().setId(taskResponseDTO.getUserId());
+        task.setTitle(taskRequestDTO.getTitle());
+        task.setDescription(taskRequestDTO.getDescription());
+        task.setCompleted(taskRequestDTO.isCompleted());
+        if (user != null) {
+            task.setUser(user);
         }
         return task;
     }
