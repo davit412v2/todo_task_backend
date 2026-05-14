@@ -1,0 +1,36 @@
+package com.todo.task.service;
+
+import org.springframework.stereotype.Service;
+
+import com.todo.task.entity.User;
+import com.todo.task.repository.UserRepository;
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public boolean existsByEmail(String email) {
+        final String emailLowerCase = toLowerCase(email);
+        return userRepository.existsByEmail(emailLowerCase);
+    }
+
+    public User create(User user) {
+        final String emailLowerCase = toLowerCase(user.getEmail());
+        user.setEmail(emailLowerCase);
+        return userRepository.save(user);
+    }
+
+    public User findByEmail(String email) {
+        final String emailLowerCase = toLowerCase(email);
+        return userRepository.findByEmail(emailLowerCase)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+    }
+
+    private String toLowerCase(String email) {
+        return email.toLowerCase();
+    }
+}
