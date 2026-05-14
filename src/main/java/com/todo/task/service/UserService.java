@@ -1,5 +1,7 @@
 package com.todo.task.service;
 
+import java.util.UUID;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,18 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+    public User findOrCreateGoogleUser(String email, String name) {
+        final String emailLowerCase = toLowerCase(email);
+        return userRepository.findByEmail(emailLowerCase)
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setEmail(emailLowerCase);
+                    newUser.setName(name);
+                    newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); 
+                    return userRepository.save(newUser);
+                });
     }
 
     private String toLowerCase(String email) {
